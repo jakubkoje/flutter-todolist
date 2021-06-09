@@ -59,17 +59,39 @@ class _TextInputState extends State<TextInput> {
                 width: 256,
               )),
           Padding(
-              padding: EdgeInsets.only(left: 32, right: 32),
-              child: TextField(
-                  controller: controller,
-                  focusNode: focusNode,
-                  autofocus: true,
-                  onSubmitted: (_) => onInputSubmit(),
-                  decoration: InputDecoration(
-                      labelText: 'Enter New To-Do',
-                      prefixIcon: Icon(Icons.check)))),
+            padding: EdgeInsets.only(left: 32, right: 32),
+            child: TextField(
+              controller: controller,
+              focusNode: focusNode,
+              autofocus: true,
+              onSubmitted: (_) => onInputSubmit(),
+              decoration: InputDecoration(
+                labelText: 'Enter New To-Do',
+                prefixIcon: Icon(Icons.check),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(16.0),
+                  ),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                    borderSide: BorderSide(color: Colors.blue.shade500)),
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                    borderSide: BorderSide(color: Colors.blue.shade100)),
+                filled: true,
+                fillColor: Colors.blue[50],
+              ),
+            ),
+          ),
           Padding(
             child: ElevatedButton(
+              style: ButtonStyle(
+                  padding: MaterialStateProperty.all(EdgeInsets.only(
+                      top: 20, bottom: 20, left: 40, right: 40))),
               onPressed: () => onInputSubmit(),
               child: Text('Add'),
             ),
