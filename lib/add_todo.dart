@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:test_app/todo_cubit.dart';
 
 class AddTodo extends StatefulWidget {
@@ -12,11 +13,15 @@ class _AddTodoState extends State<AddTodo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Test Page'),
+        title: Text('Add To-Do'),
       ),
       body: SafeArea(
-          child: Center(
-        child: TextInput(),
+          child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        child: Center(
+          child: TextInput(),
+        ),
+        onTap: () => FocusScope.of(context).unfocus(),
       )),
     );
   }
@@ -36,6 +41,8 @@ class _TextInputState extends State<TextInput> {
       context.read<TodoCubit>().add(Todo(controller.text));
       controller.clear();
       Navigator.of(context).pop();
+    } else {
+      focusNode.requestFocus();
     }
   }
 
@@ -45,6 +52,12 @@ class _TextInputState extends State<TextInput> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          Container(
+              margin: EdgeInsets.only(top: 16, bottom: 128),
+              child: SvgPicture.asset(
+                'assets/images/to-do-list.svg',
+                width: 256,
+              )),
           Padding(
               padding: EdgeInsets.only(left: 32, right: 32),
               child: TextField(
