@@ -36,9 +36,9 @@ class _TextInputState extends State<TextInput> {
   TextEditingController controller = new TextEditingController();
   FocusNode focusNode = new FocusNode();
 
-  void onInputSubmit() {
+  void onInputSubmit() async {
     if (controller.text.length != 0) {
-      context.read<TodoCubit>().add(controller.text);
+      await context.read<TodoCubit>().add(controller.text);
       controller.clear();
       Navigator.of(context).pop();
     } else {
