@@ -38,7 +38,7 @@ class _TextInputState extends State<TextInput> {
 
   void onInputSubmit() {
     if (controller.text.length != 0) {
-      context.read<TodoCubit>().add(Todo(controller.text));
+      context.read<TodoCubit>().add(controller.text);
       controller.clear();
       Navigator.of(context).pop();
     } else {

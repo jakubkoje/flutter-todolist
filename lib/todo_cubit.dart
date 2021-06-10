@@ -1,72 +1,57 @@
-import 'dart:convert';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uuid/uuid.dart';
-
-Uuid uuid = Uuid();
-
-class Todo {
-  String todoText = '';
-  String id = '';
-  bool checked = false;
-  DateTime createdAt = DateTime.now();
-
-  Todo(String todoText) {
-    this.todoText = todoText;
-    this.id = uuid.v4();
-    this.checked = false;
-    this.createdAt = DateTime.now();
-  }
-
-  Todo.fromJson(Map<String, dynamic> json) {
-    debugPrint(json['todoText']);
-    this.todoText = json['todoText'];
-    this.id = json['id'];
-    this.checked = json['checked'] == 'true';
-    this.createdAt = DateTime.parse(json['createdAt']);
-  }
-
-  Map<String, dynamic> toJson() => {
-        'todoText': this.todoText,
-        'id': this.id,
-        'checked': this.checked.toString(),
-        'createdAt': this.createdAt.toIso8601String()
-      };
-}
+import 'package:test_app/todo.dart';
 
 class TodoCubit extends Cubit<List<Todo>> {
   TodoCubit() : super([]);
 
   void fetchTodos() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String todosString = prefs.getString('todos') ?? '';
-    if (todosString.length > 0) {
-      List<Todo> todos =
-          List<Todo>.from(jsonDecode(todosString).map((i) => Todo.fromJson(i)));
-      emit(todos);
-    }
+    var todosData = await FirebaseFirestore.instance.collection('todos').get();
+    List<Todo> todos = [];
+    todosData.docs.forEach((element) {
+      var data = element.data();
+      data.putIfAbsent('id', () => element.id);
+      debugPrint(element.id.toString());
+      todos.add(Todo.fromJson(data));
+      debugPrint(todos.toString());
+    });
+    emit(todos);
   }
 
-  void add(Todo todo) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<Todo> _state = [...state, todo];
-    prefs.setString(
-        'todos', jsonEncode(_state.map((e) => e.toJson()).toList()));
+  void add(String todoText) async {
+    var collection = FirebaseFirestore.instance.collection('todos');
+    Map<String, dynamic> data = {
+      'todoText': todoText,
+      'checked': false,
+      'createdAt': Timestamp.now()
+    };
+    var ref = await collection.add(data);
+    data.putIfAbsent('id', () => ref.id);
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<Todo> _state = [...state, Todo.fromJson(data)];
+    // prefs.setString(
+    //     'todos', jsonEncode(_state.map((e) => e.toJson()).toList()));
     emit(_state);
   }
 
   void remove(Todo todo) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await FirebaseFirestore.instance.collection('todos').doc(todo.id).delete();
+
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
     List<Todo> _state = [...state.where((t) => t.id != todo.id)];
-    prefs.setString(
-        'todos', jsonEncode(_state.map((e) => e.toJson()).toList()));
+    // prefs.setString(
+    //     'todos', jsonEncode(_state.map((e) => e.toJson()).toList()));
     emit(_state);
   }
 
   void check(Todo todo) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    FirebaseFirestore.instance
+        .collection('todos')
+        .doc(todo.id)
+        .update({'checked': !todo.checked});
+
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
     List<Todo> _state = [
       ...state.map((t) {
         if (t.id == todo.id) {
@@ -75,8 +60,8 @@ class TodoCubit extends Cubit<List<Todo>> {
         return t;
       })
     ];
-    prefs.setString(
-        'todos', jsonEncode(_state.map((e) => e.toJson()).toList()));
+    // prefs.setString(
+    //     'todos', jsonEncode(_state.map((e) => e.toJson()).toList()));
 
     emit(_state);
   }
