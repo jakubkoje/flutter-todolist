@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="dev.jakubjelinek.test_app">
+    package="dev.jakubjelinek.todo_app">
    <application
         android:label="test_app"
         android:icon="@mipmap/ic_launcher">

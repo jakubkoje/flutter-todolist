@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         create: (_) => TodoCubit(),
         child: MaterialApp(
             debugShowCheckedModeBanner: false,
-            title: 'To-Do List',
+            title: 'Todo App',
             navigatorObservers: <NavigatorObserver>[
               FirebaseAnalyticsObserver(analytics: analytics)
             ],
