@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:test_app/todo_cubit.dart';
+import 'package:todo_app/todo_cubit.dart';
 
 class AddTodo extends StatefulWidget {
   @override
@@ -38,7 +38,7 @@ class _TextInputState extends State<TextInput> {
 
   void onInputSubmit() async {
     if (controller.text.length != 0) {
-      await context.read<TodoCubit>().add(controller.text);
+      await context.read<TodoCubit>().add(controller.text, context);
       controller.clear();
       Navigator.of(context).pop();
     } else {

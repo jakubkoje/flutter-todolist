@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:test_app/add_todo.dart';
-import 'package:test_app/todo.dart';
-import 'package:test_app/todo_cubit.dart';
+import 'package:todo_app/add_todo.dart';
+import 'package:todo_app/todo.dart';
+import 'package:todo_app/todo_cubit.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -14,7 +14,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    context.read<TodoCubit>().fetchTodos();
+    context.read<TodoCubit>().fetchTodos(context);
   }
 
   @override
@@ -51,10 +51,10 @@ class TodoListWidget extends StatelessWidget {
                 return Dismissible(
                     key: Key(todo.id),
                     direction: DismissDirection.endToStart,
-                    onDismissed: (direction) {
-                      context.read<TodoCubit>().remove(todo);
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(todo.todoText + ' todo dismissed')));
+                    onDismissed: (direction) async {
+                      await context.read<TodoCubit>().remove(todo, context);
+                      // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      //     content: Text(todo.todoText + ' todo dismissed')));
                     },
                     background: Container(
                       color: Colors.red,
@@ -71,8 +71,8 @@ class TodoListWidget extends StatelessWidget {
                       subtitle: Text(
                           '${todo.createdAt.day}. ${todo.createdAt.month}. ${todo.createdAt.year}'),
                       value: todo.checked,
-                      onChanged: (bool? value) {
-                        context.read<TodoCubit>().check(todo);
+                      onChanged: (bool? value) async {
+                        await context.read<TodoCubit>().check(todo, context);
                       },
                     ));
               },

@@ -3,9 +3,9 @@ import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test_app/home.dart';
-import 'package:test_app/todo_cubit.dart';
-import 'package:test_app/todo_observer.dart';
+import 'package:todo_app/home.dart';
+import 'package:todo_app/todo_cubit.dart';
+import 'package:todo_app/todo_observer.dart';
 
 void main() async {
   Bloc.observer = TodoObserver();
