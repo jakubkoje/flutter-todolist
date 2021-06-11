@@ -134,20 +134,6 @@ class TodoListWidget extends StatelessWidget {
                         ),
                       )),
                 );
-                // CheckboxListTile(
-                //   title: todo.checked
-                //       ? Text(todo.todoText,
-                //           style: TextStyle(
-                //               decoration: TextDecoration.lineThrough))
-                //       : Text(todo.todoText),
-                //   subtitle: Text(
-                //       '${todo.createdAt.day}. ${todo.createdAt.month}. ${todo.createdAt.year}'),
-                //   value: todo.checked,
-                //   onChanged: (bool? value) async {
-                //     await context.read<TodoCubit>().check(todo, context);
-                //   },
-                // )
-                // );
               },
             )
           : Column(
