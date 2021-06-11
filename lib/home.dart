@@ -108,14 +108,27 @@ class TodoListWidget extends StatelessWidget {
                               ),
                               Container(
                                   margin: EdgeInsets.only(left: 8),
-                                  child: todo.checked
-                                      ? Text(todo.todoText,
-                                          style: TextStyle(
-                                              decoration:
-                                                  TextDecoration.lineThrough,
-                                              fontSize: 16))
-                                      : Text(todo.todoText,
-                                          style: TextStyle(fontSize: 16))),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      todo.checked
+                                          ? Text(todo.todoText,
+                                              style: TextStyle(
+                                                  decoration: TextDecoration
+                                                      .lineThrough,
+                                                  fontSize: 16))
+                                          : Text(todo.todoText,
+                                              style: TextStyle(fontSize: 16)),
+                                      Container(
+                                          margin: EdgeInsets.only(top: 4),
+                                          child: Text(
+                                              '${todo.createdAt.day}. ${todo.createdAt.month}. ${todo.createdAt.year}',
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.grey))),
+                                    ],
+                                  )),
                             ],
                           ),
                         ),
