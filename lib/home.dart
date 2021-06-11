@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -20,19 +21,46 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        extendBodyBehindAppBar: true,
         appBar: AppBar(
-          title: Text(
-            'To-Do List',
-          ),
+          elevation: 0,
+          toolbarHeight: 72,
+          backgroundColor: Colors.transparent,
           actions: [
-            IconButton(
-                onPressed: () => Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (_) => AddTodo())),
-                icon: Icon(Icons.add))
+            Container(
+                margin: EdgeInsets.only(right: 16),
+                child: IconButton(
+                    onPressed: () => Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (_) => AddTodo())),
+                    icon: Icon(
+                      Icons.add_circle_outline,
+                      color: Colors.black,
+                    )))
           ],
         ),
         body: SafeArea(
-          child: TodoListWidget(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                  margin: EdgeInsets.only(left: 16, bottom: 16),
+                  child: Text(
+                    'What\'s up, Jakub!',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold),
+                  )),
+              Container(
+                  margin: EdgeInsets.only(left: 16, top: 8, bottom: 8),
+                  child: Text('TODAY\'S TODOS',
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12))),
+              Expanded(child: TodoListWidget())
+            ],
+          ),
         ));
   }
 }
@@ -44,40 +72,69 @@ class TodoListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<TodoCubit, List<Todo>>(builder: (context, state) {
       return (context.read<TodoCubit>().state.length != 0
-          ? ListView.separated(
+          ? ListView.builder(
               itemCount: context.read<TodoCubit>().state.length,
               itemBuilder: (context, index) {
                 Todo todo = context.read<TodoCubit>().state[index];
                 return Dismissible(
-                    key: Key(todo.id),
-                    direction: DismissDirection.endToStart,
-                    onDismissed: (direction) async {
-                      await context.read<TodoCubit>().remove(todo, context);
-                      // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      //     content: Text(todo.todoText + ' todo dismissed')));
-                    },
-                    background: Container(
-                      color: Colors.red,
-                      child: Icon((Icons.cancel)),
-                      padding: EdgeInsets.only(right: 8),
-                      alignment: Alignment.centerRight,
-                    ),
-                    child: CheckboxListTile(
-                      title: todo.checked
-                          ? Text(todo.todoText,
-                              style: TextStyle(
-                                  decoration: TextDecoration.lineThrough))
-                          : Text(todo.todoText),
-                      subtitle: Text(
-                          '${todo.createdAt.day}. ${todo.createdAt.month}. ${todo.createdAt.year}'),
-                      value: todo.checked,
-                      onChanged: (bool? value) async {
-                        await context.read<TodoCubit>().check(todo, context);
-                      },
-                    ));
-              },
-              separatorBuilder: (context, index) {
-                return Divider();
+                  key: Key(todo.id),
+                  direction: DismissDirection.endToStart,
+                  onDismissed: (direction) async {
+                    await context.read<TodoCubit>().remove(todo, context);
+                    // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    //     content: Text(todo.todoText + ' todo dismissed')));
+                  },
+                  child: Container(
+                      margin: EdgeInsets.only(
+                          left: 24, right: 24, top: 8, bottom: 8),
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        elevation: 5,
+                        shadowColor: Colors.white,
+                        child: Container(
+                          padding: EdgeInsets.all(16),
+                          child: Row(
+                            children: <Widget>[
+                              Checkbox(
+                                value: todo.checked,
+                                shape: CircleBorder(),
+                                onChanged: (bool? value) async {
+                                  await context
+                                      .read<TodoCubit>()
+                                      .check(todo, context);
+                                },
+                              ),
+                              Container(
+                                  margin: EdgeInsets.only(left: 8),
+                                  child: todo.checked
+                                      ? Text(todo.todoText,
+                                          style: TextStyle(
+                                              decoration:
+                                                  TextDecoration.lineThrough,
+                                              fontSize: 16))
+                                      : Text(todo.todoText,
+                                          style: TextStyle(fontSize: 16))),
+                            ],
+                          ),
+                        ),
+                      )),
+                );
+                // CheckboxListTile(
+                //   title: todo.checked
+                //       ? Text(todo.todoText,
+                //           style: TextStyle(
+                //               decoration: TextDecoration.lineThrough))
+                //       : Text(todo.todoText),
+                //   subtitle: Text(
+                //       '${todo.createdAt.day}. ${todo.createdAt.month}. ${todo.createdAt.year}'),
+                //   value: todo.checked,
+                //   onChanged: (bool? value) async {
+                //     await context.read<TodoCubit>().check(todo, context);
+                //   },
+                // )
+                // );
               },
             )
           : Column(
@@ -86,13 +143,13 @@ class TodoListWidget extends StatelessWidget {
               children: <Widget>[
                 Container(
                   child: SvgPicture.asset(
-                    'assets/images/sad-sleepy-emoticon-face-square.svg',
+                    'assets/images/emoticon-square-smiling-face-with-closed-eyes.svg',
                     color: Colors.grey,
                   ),
                   margin: EdgeInsets.only(bottom: 16),
                 ),
                 Text(
-                  'No Todos...',
+                  'No more todos for today!',
                   style: TextStyle(
                       color: Colors.grey,
                       fontSize: 24,

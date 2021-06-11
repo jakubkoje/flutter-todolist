@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -12,8 +13,16 @@ class _AddTodoState extends State<AddTodo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text('Add To-Do'),
+        iconTheme: IconThemeData(color: Colors.black),
+        title: Text(
+          'Add To-Do',
+          style: TextStyle(color: Colors.black),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        toolbarHeight: 72,
       ),
       body: SafeArea(
           child: GestureDetector(
@@ -83,15 +92,18 @@ class _TextInputState extends State<TextInput> {
                     borderRadius: BorderRadius.all(Radius.circular(16.0)),
                     borderSide: BorderSide(color: Colors.blue.shade100)),
                 filled: true,
-                fillColor: Colors.blue[50],
+                fillColor: Colors.white,
               ),
             ),
           ),
           Padding(
             child: ElevatedButton(
               style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(16)))),
                   padding: MaterialStateProperty.all(EdgeInsets.only(
-                      top: 20, bottom: 20, left: 40, right: 40))),
+                      top: 24, bottom: 24, left: 40, right: 40))),
               onPressed: () => onInputSubmit(),
               child: Text('Add'),
             ),

@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Todo App',
+            theme: ThemeData(scaffoldBackgroundColor: Color(0xFFF8FAFF)),
             navigatorObservers: <NavigatorObserver>[
               FirebaseAnalyticsObserver(analytics: analytics)
             ],
