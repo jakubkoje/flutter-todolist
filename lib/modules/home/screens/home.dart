@@ -1,10 +1,10 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:todo_app/add_todo.dart';
-import 'package:todo_app/todo.dart';
-import 'package:todo_app/todo_cubit.dart';
+import 'package:todo_app/modules/add_todo/bloc/todo_cubit.dart';
+import 'package:todo_app/modules/add_todo/models/todo.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -30,8 +30,7 @@ class _HomePageState extends State<HomePage> {
             Container(
                 margin: EdgeInsets.only(right: 16),
                 child: IconButton(
-                    onPressed: () => Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (_) => AddTodo())),
+                    onPressed: () => Beamer.of(context).beamToNamed('/add'),
                     icon: Icon(
                       Icons.add_circle_outline,
                       color: Colors.black,

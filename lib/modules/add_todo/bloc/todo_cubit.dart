@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo_app/todo.dart';
+import 'package:todo_app/modules/add_todo/models/todo.dart';
 
 class TodoCubit extends Cubit<List<Todo>> {
   TodoCubit() : super([]);
