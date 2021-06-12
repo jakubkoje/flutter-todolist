@@ -21,46 +21,77 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          elevation: 0,
-          toolbarHeight: 72,
-          backgroundColor: Colors.transparent,
-          actions: [
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.black),
+        elevation: 0,
+        toolbarHeight: 72,
+        backgroundColor: Colors.transparent,
+        actions: [
+          Container(
+              margin: EdgeInsets.only(right: 8),
+              child: IconButton(
+                  onPressed: () => Beamer.of(context).beamToNamed('/add'),
+                  icon: Icon(
+                    Icons.add_circle_outline,
+                  )))
+        ],
+      ),
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
             Container(
-                margin: EdgeInsets.only(right: 16),
-                child: IconButton(
-                    onPressed: () => Beamer.of(context).beamToNamed('/add'),
-                    icon: Icon(
-                      Icons.add_circle_outline,
+                margin: EdgeInsets.only(left: 16, bottom: 16),
+                child: Text(
+                  'What\'s up, Jakub!',
+                  style: TextStyle(
                       color: Colors.black,
-                    )))
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold),
+                )),
+            Container(
+                margin: EdgeInsets.only(left: 16, top: 8, bottom: 8),
+                child: Text('TODAY\'S TODOS',
+                    style: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12))),
+            Expanded(child: TodoListWidget())
           ],
         ),
-        body: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                  margin: EdgeInsets.only(left: 16, bottom: 16),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(color: Colors.blue),
+              child: Container(
+                  alignment: Alignment.center,
                   child: Text(
-                    'What\'s up, Jakub!',
+                    'Made with love️ by Jakub',
                     style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 32,
+                        color: Colors.white,
+                        fontSize: 20,
                         fontWeight: FontWeight.bold),
                   )),
-              Container(
-                  margin: EdgeInsets.only(left: 16, top: 8, bottom: 8),
-                  child: Text('TODAY\'S TODOS',
-                      style: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12))),
-              Expanded(child: TodoListWidget())
-            ],
-          ),
-        ));
+            ),
+            Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(top: 16),
+              child: Text(
+                'Nothing here, yet',
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
 
