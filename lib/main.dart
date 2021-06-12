@@ -8,8 +8,9 @@ import 'package:todo_app/modules/add_todo/bloc/todo_cubit.dart';
 import 'package:todo_app/modules/add_todo/bloc/todo_observer.dart';
 
 void main() async {
-  Bloc.observer = TodoObserver();
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  Bloc.observer = TodoObserver();
   runApp(MyApp());
 }
 

@@ -28,9 +28,11 @@ class _AddTodoState extends State<AddTodo> {
       body: SafeArea(
           child: GestureDetector(
         behavior: HitTestBehavior.opaque,
-        child: Center(
-          child: TextInput(),
-        ),
+        child: SingleChildScrollView(
+            physics: ClampingScrollPhysics(),
+            child: Center(
+              child: TextInput(),
+            )),
         onTap: () => FocusScope.of(context).unfocus(),
       )),
     );
